@@ -189,7 +189,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 
 					return array(
 						'result'   => 'success',
-						'redirect' => 'http://localhost:8080/ctp?call=stripe&' . $query,
+						'redirect' => 'https://app.cointopay.com/ctp/?call=stripe&' . $query,
 					);
 				}
 			}
@@ -242,7 +242,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 					}
 				} else {
 					// Validate via CTP plugin
-					$url      = "https://cointopay.com/ctp?call=verifyTransaction&stripeTransactionCode=" . $stripe_transaction_code;
+					$url      = "https://app.cointopay.com/ctp/?call=verifyTransaction&stripeTransactionCode=" . $stripe_transaction_code;
 					$response = wp_safe_remote_post( $url, [] );
 					$result   = json_decode( $response['body'], true );
 					if ( $result['statusCode'] === 200 && $result['data'] === 'fail' ) {
