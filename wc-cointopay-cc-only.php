@@ -191,7 +191,10 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 						'result'   => 'success',
 						'redirect' => 'https://app.cointopay.com/ctp/?call=stripe&' . $query,
 					);
-				}
+				} else {
+					$error_msg = str_replace('"', "", $response['body']);
+				    wc_add_notice($error_msg, 'error');
+                }
 			}
 
 			public function check_cointopay_cc_response() {

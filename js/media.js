@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
-    var btnUpload = $('#woocommerce_cointopay_cc_upload-btn');
-    var logoElm = $('#woocommerce_cointopay_cc_logo');
+    var btnUplEoad = $('#woocommerce_cointopay_cc_upload-btn');
+    var logolm = $('#woocommerce_cointopay_cc_logo');
     btnUpload.val('Upload Logo');
     displayLogo();
     btnUpload.click(function (e) {
