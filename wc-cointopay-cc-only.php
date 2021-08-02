@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce Cointopay.com CC Only
  * Description: Extends WooCommerce with crypto payments gateway.
- * Version: 1.0
+ * Version: 1.1
  * Author: Cointopay
  *
  * @package  WooCommerce
