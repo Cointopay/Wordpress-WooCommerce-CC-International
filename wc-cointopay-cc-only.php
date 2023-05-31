@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: WooCommerce Cointopay.com CC Only
- * Description: Extends WooCommerce with crypto payments gateway.
- * Version: 1.1
+ * Description: Extends WooCommerce with card payments gateway.
+ * Version: 1.2
  * Author: Cointopay
  *
  * @package  WooCommerce
@@ -31,7 +31,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 			private $merchant_id;
 			private $api_key;
 			private $secret;
-			private $alt_coin_id = 625;
+			public $alt_coin_id;
 			public $description;
 			public $title;
 
@@ -46,6 +46,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				$this->title       = $this->get_option( 'title' );
 				$this->description = $this->get_option( 'description' );
 				$this->merchant_id = $this->get_option( 'merchant_id' );
+				$this->alt_coin_id = $this->get_option( 'cointopay_cc_alt_coin' );
 
 				$this->api_key        = '1';
 				$this->secret         = $this->get_option( 'secret' );
@@ -78,14 +79,15 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				if ( empty( $this->secret ) === true ) {
 					add_action( 'admin_notices', array( &$this, 'secret_missing_message' ) );
 				}
-				add_action( 'admin_enqueue_scripts', array( &$this, 'ctp_include_media' ) );
+				add_action( 'admin_enqueue_scripts', array( &$this, 'ctp_cc_include_custom_js' ) );
 			}
 
-			public function ctp_include_media() {
+			public function ctp_cc_include_custom_js() {
 				if ( ! did_action( 'wp_enqueue_media' ) ) {
 					wp_enqueue_media();
 				}
-				wp_enqueue_script( 'media-ctp', plugins_url( 'js/media.js', __FILE__ ), array( 'jquery' ), null, false );
+				wp_enqueue_script( 'custom-ctp-cc-js', plugins_url( 'js/ctp_cc_custom.js', __FILE__ ), array( 'jquery' ), null, false );
+				wp_localize_script( 'custom-ctp-cc-js', 'ajaxurlctpcc', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ))); 
 			}
 			// Define init form fields function
 			public function init_form_fields() {
@@ -120,14 +122,13 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 						'description' => __( 'Please enter your Cointopay SecurityCode, You can get this information in: <a href="' . esc_url( 'https://cointopay.com' ) . '" target="_blank">Cointopay Account</a>.', 'ctp-cc' ),
 						'default'     => '',
 					),
-					'upload-btn'  => array(
-						'title'       => __( 'Upload Logo', 'ctp-cc' ),
-						'type'        => 'button',
-						'description' => __( 'Payment logo' ),
-						'default'     => '',
-					),
-					'logo'        => array(
-						'type' => 'hidden',
+					'cointopay_cc_alt_coin' =>  array(
+						'type'          => 'select',
+						'class'         => array( 'cointopay_cc_alt_coin' ),
+						'title'         => __( 'Default Receive Currency', 'ctp-cc' ),
+						'options'       => array(
+						'blank'		=> __( 'Select Alt Coin', 'ctp-cc' ),
+						)
 					),
 				);
 			}
@@ -177,20 +178,14 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				);
 				$response = wp_safe_remote_post( $url, $params );
 				if ( ( false === is_wp_error( $response ) ) && ( 200 === $response['response']['code'] ) && ( 'OK' === $response['response']['message'] ) ) {
-					$result = json_decode( $response['body'], true );
+					$result = json_decode( $response['body'] );
 					// Redirect to surplus
-					$query = http_build_query( [
-						'transactionID'        => $result['TransactionID'],
-						'amount'                => number_format( $result['Amount'], 2 ),
-						'currency'              => 'EUR',
-						'customerReferenceNr' => $result['CustomerReferenceNr'],
-						'confirmCode'          => $result['Security']
-					] );
-
 					return array(
-						'result'   => 'success',
-						'redirect' => 'https://app.cointopay.com/ctp/?call=stripe&' . $query,
-					);
+							'result'   => 'success',
+							'redirect' => $result->shortURL . "?fiat=1",
+						);
+				
+					
 				} else {
 					$error_msg = str_replace('"', "", $response['body']);
 				    wc_add_notice($error_msg, 'error');
@@ -299,7 +294,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				$message .= '<p><strong>Gateway Disabled</strong> You should enter your API key in Cointopay configuration. <a href="' . get_admin_url() . 'admin.php?page=wc-settings&amp;tab=checkout&amp;section=cointopay">Click here to configure</a></p>';
 				$message .= '</div>';
 
-				echo esc_html( $message );
+				return $message;
 			}
 
 			/**
@@ -310,7 +305,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				$message .= '<p><strong>Gateway Disabled</strong> You should check your SecurityCode in Cointopay configuration. <a href="' . get_admin_url() . 'admin.php?page=wc-settings&amp;tab=checkout&amp;section=cointopay">Click here to configure!</a></p>';
 				$message .= '</div>';
 
-				echo esc_html( $message );
+				return $message;
 			}
 
 			public function validate_order( $data ) {
@@ -326,6 +321,53 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 
 				return json_decode( $response['body'], true );
 			}
+		}
+	}
+	
+	add_action( 'wp_ajax_nopriv_getCTPCCMerchantCoins', 'getCTPCCMerchantCoins' );
+	add_action( 'wp_ajax_getCTPCCMerchantCoins', 'getCTPCCMerchantCoins' );
+	function getCTPCCMerchantCoins()
+	{
+		$merchantId = 0;
+		$merchantId = intval($_REQUEST['merchant']);
+		if(isset($merchantId) && $merchantId !== 0)
+		{
+			$option = '';
+			$arr = getCTPCCCoins($merchantId);
+			foreach($arr as $key => $value)
+			{
+				$ctpbank = new WC_CointopayCC_Gateway;
+				$ctpbselect = ($key == $ctpbank->alt_coin_id) ? 'selected="selected"' : '';
+				$option .= '<option value="'.$key.'" '.$ctpbselect.'>'.$value.'</option>';
+			}
+			
+			echo $option;exit();
+		}
+	}
+
+	function getCTPCCCoins($merchantId)
+	{
+		$params = array(
+			'body' => 'MerchantID=' . $merchantId . '&output=json',
+		);
+		$url = 'https://cointopay.com/CloneMasterTransaction';
+		$response  = wp_safe_remote_post($url, $params);
+		if (( false === is_wp_error($response) ) && ( 200 === $response['response']['code'] ) && ( 'OK' === $response['response']['message'] )) {
+			$php_arr = json_decode($response['body']);
+			$new_php_arr = array();
+
+			if(!empty($php_arr))
+			{
+				for($i=0;$i<count($php_arr)-1;$i++)
+				{
+					if(($i%2)==0)
+					{
+						$new_php_arr[$php_arr[$i+1]] = $php_arr[$i];
+					}
+				}
+			}
+			
+			return $new_php_arr;
 		}
 	}
 }
