@@ -19,7 +19,7 @@ Please follow the Wordpress WooCommerce Cointopay CC Plugin install instructions
     2. Go to your WooCommerce Settings, and click the Payments tab, find Cointopay CC Only.
     3. In settings "MerchantID" <- set your Cointopay ID.
     4. In settings "Security Code" <- set your Cointopay Security code (no API key required)
-    5. In settings "Default Receive Currency", this can also be found in the Account section of Cointopay.com. 625 for euro, 1 for bitcoin (default), 2 litecoin etc..
+    5. In settings "Default Receive Currency", this can also be found in the Account section of Cointopay.com. 625 for euro, 1 for bitcoin (default), 2 litecoin etc.
     6. Save changes
 
 Tested on:
