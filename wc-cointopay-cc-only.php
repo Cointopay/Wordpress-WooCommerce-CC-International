@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce Cointopay.com CC Only
  * Description: Extends WooCommerce with card payments gateway.
- * Version: 1.2
+ * Version: 1.3.0
  * Author: Cointopay
  *
  * @package  WooCommerce
@@ -195,12 +195,12 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 			public function check_cointopay_cc_response() {
 				global $woocommerce;
 				$woocommerce->cart->empty_cart();
-				$order_id                = ( ! empty( intval( $_REQUEST['customer_reference_nr'] ) ) ) ? intval( $_REQUEST['customer_reference_nr'] ) : 0;
+				$order_id                = ( ! empty( intval( $_REQUEST['CustomerReferenceNr'] ) ) ) ? intval( $_REQUEST['CustomerReferenceNr'] ) : 0;
 				$order_status            = ( ! empty( sanitize_text_field( $_REQUEST['status'] ) ) ) ? sanitize_text_field( $_REQUEST['status'] ) : '';
-				$order_transaction_id    = ( ! empty( sanitize_text_field( $_REQUEST['transaction_id'] ) ) ) ? sanitize_text_field( $_REQUEST['transaction_id'] ) : '';
-				$order_confirm_code      = ( ! empty( sanitize_text_field( $_REQUEST['confirm_code'] ) ) ) ? sanitize_text_field( $_REQUEST['confirm_code'] ) : '';
+				$order_transaction_id    = ( ! empty( sanitize_text_field( $_REQUEST['TransactionID'] ) ) ) ? sanitize_text_field( $_REQUEST['TransactionID'] ) : '';
+				$order_confirm_code      = ( ! empty( sanitize_text_field( $_REQUEST['ConfirmCode'] ) ) ) ? sanitize_text_field( $_REQUEST['ConfirmCode'] ) : '';
 				$stripe_transaction_code = ( ! empty( sanitize_text_field( $_REQUEST['stripe_transaction_id'] ) ) ) ? sanitize_text_field( $_REQUEST['stripe_transaction_id'] ) : '';
-				$not_enough              = isset( $_REQUEST['not_enough'] ) ? intval( $_REQUEST['not_enough'] ) : 1;
+				$not_enough              = isset( $_REQUEST['notenough'] ) ? intval( $_REQUEST['notenough'] ) : 1;
 				$is_live                 = ( ! empty( $_REQUEST['is_live'] ) ) ? (string) ( $_REQUEST['is_live'] ) : 'true';
 				$order                   = new WC_Order( $order_id );
 				$data                    = array(
