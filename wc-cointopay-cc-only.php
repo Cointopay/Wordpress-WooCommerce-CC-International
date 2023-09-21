@@ -195,13 +195,13 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 			public function check_cointopay_cc_response() {
 				global $woocommerce;
 				$woocommerce->cart->empty_cart();
-				$order_id                = ( ! empty( intval( $_REQUEST['CustomerReferenceNr'] ) ) ) ? intval( $_REQUEST['CustomerReferenceNr'] ) : 0;
-				$order_status            = ( ! empty( sanitize_text_field( $_REQUEST['status'] ) ) ) ? sanitize_text_field( $_REQUEST['status'] ) : '';
-				$order_transaction_id    = ( ! empty( sanitize_text_field( $_REQUEST['TransactionID'] ) ) ) ? sanitize_text_field( $_REQUEST['TransactionID'] ) : '';
-				$order_confirm_code      = ( ! empty( sanitize_text_field( $_REQUEST['ConfirmCode'] ) ) ) ? sanitize_text_field( $_REQUEST['ConfirmCode'] ) : '';
-				$stripe_transaction_code = ( ! empty( sanitize_text_field( $_REQUEST['stripe_transaction_id'] ) ) ) ? sanitize_text_field( $_REQUEST['stripe_transaction_id'] ) : '';
+				$order_id                = ( isset( $_REQUEST['CustomerReferenceNr'] ) ) ? intval( $_REQUEST['CustomerReferenceNr'] ) : 0;
+				$order_status            = ( isset( $_REQUEST['status'] ) ) ? sanitize_text_field( $_REQUEST['status'] ) : '';
+				$order_transaction_id    = ( isset( $_REQUEST['TransactionID'] ) ) ? sanitize_text_field( $_REQUEST['TransactionID'] ) : '';
+				$order_confirm_code      = ( isset( $_REQUEST['ConfirmCode'] ) ) ? sanitize_text_field( $_REQUEST['ConfirmCode'] ) : '';
+				$stripe_transaction_code = ( isset( $_REQUEST['stripe_transaction_id'] ) ) ? sanitize_text_field( $_REQUEST['stripe_transaction_id'] ) : '';
 				$not_enough              = isset( $_REQUEST['notenough'] ) ? intval( $_REQUEST['notenough'] ) : 1;
-				$is_live                 = ( ! empty( $_REQUEST['is_live'] ) ) ? (string) ( $_REQUEST['is_live'] ) : 'true';
+				$is_live                 = ( isset( $_REQUEST['is_live'] ) ) ? (string) ( $_REQUEST['is_live'] ) : 'true';
 				$order                   = new WC_Order( $order_id );
 				$data                    = array(
 					'mid'           => $this->merchant_id,
@@ -261,7 +261,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				}
 				if ( ( 'paid' === $order_status ) && ( 0 === $not_enough ) ) {
 					// Do your magic here, and return 200 OK to Cointopay.
-					if ( 'completed' === $order->get_status() ) {
+					if ( 'processing' === $order->get_status() ) {
 						$order->update_status( 'processing', sprintf( __( 'IPN: Payment completed notification from Cointopay', 'woocommerce' ) ) );
 					} else {
 						$order->payment_complete();
