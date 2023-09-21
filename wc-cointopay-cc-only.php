@@ -200,16 +200,14 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				$order_transaction_id    = ( isset( $_REQUEST['TransactionID'] ) ) ? sanitize_text_field( $_REQUEST['TransactionID'] ) : '';
 				$order_confirm_code      = ( isset( $_REQUEST['ConfirmCode'] ) ) ? sanitize_text_field( $_REQUEST['ConfirmCode'] ) : '';
 				$stripe_transaction_code = ( isset( $_REQUEST['stripe_transaction_id'] ) ) ? sanitize_text_field( $_REQUEST['stripe_transaction_id'] ) : '';
-				$not_enough              = isset( $_REQUEST['notenough'] ) ? intval( $_REQUEST['notenough'] ) : 1;
+				$not_enough              = ( isset( $_REQUEST['notenough'] ) ) ? intval( $_REQUEST['notenough'] ) : 1;
 				$is_live                 = ( isset( $_REQUEST['is_live'] ) ) ? (string) ( $_REQUEST['is_live'] ) : 'true';
-				$order                   = new WC_Order( $order_id );
-				$data                    = array(
+				$order = wc_get_order( $order_id );
+				$data = array(
 					'mid'           => $this->merchant_id,
 					'TransactionID' => $order_transaction_id,
 					'ConfirmCode'   => $order_confirm_code,
 				);
-				$posted_data_json = json_encode($data);
-				file_put_contents(plugin_dir_path( __FILE__ ).'logs/ctp_validate_req_'.rand().'.log', $posted_data_json);
 				if ( $is_live == 'true' ) {
 					$transactionData = $this->validate_order( $data );
 					if ( 200 !== $transactionData['status_code'] ) {
@@ -263,7 +261,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 				}
 				if ( ( 'paid' === $order_status ) && ( 0 === $not_enough ) ) {
 					// Do your magic here, and return 200 OK to Cointopay.
-					if ( 'processing' === $order->get_status() ) {
+					if ( 'completed' === $order->get_status() ) {
 						$order->update_status( 'processing', sprintf( __( 'IPN: Payment completed notification from Cointopay', 'woocommerce' ) ) );
 					} else {
 						$order->payment_complete();
