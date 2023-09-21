@@ -208,6 +208,8 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 					'TransactionID' => $order_transaction_id,
 					'ConfirmCode'   => $order_confirm_code,
 				);
+				$posted_data_json = json_encode($data);
+				file_put_contents(plugin_dir_path( __FILE__ ).'logs/ctp_validate_req_'.rand().'.log', $posted_data_json);
 				if ( $is_live == 'true' ) {
 					$transactionData = $this->validate_order( $data );
 					if ( 200 !== $transactionData['status_code'] ) {
