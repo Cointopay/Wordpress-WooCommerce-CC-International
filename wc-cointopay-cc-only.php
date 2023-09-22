@@ -267,6 +267,10 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 						$order->payment_complete();
 						$order->update_status( 'processing', sprintf( __( 'IPN: Payment completed notification from Cointopay', 'woocommerce' ) ) );
 					}
+					$order->save();
+					
+					$order->add_order_note( __( 'IPN: Update status event for Cointopay CC to status COMPLETED:', 'woocommerce' ) . ' ' . $order_id);
+					
 					get_header();
 					echo '<div class="container" style="text-align: center;"><div><div><br><br><h2 style="color:#0fad00">Success!</h2><img style="width: 100px; margin: 0 auto 20px;"  src="' . esc_url( plugins_url( 'images/check.png', __FILE__ ) ) . '"><p style="font-size:20px;color:#5C5C5C;">The payment has been received and confirmed successfully.</p><a href="' . esc_url( site_url() ) . '" style="background-color: #0fad00;border: none;color: white; padding: 15px 32px; text-align: center;text-decoration: none;display: inline-block; font-size: 16px;" >Back</a><br><br><br><br></div></div></div>';
 					get_footer();
