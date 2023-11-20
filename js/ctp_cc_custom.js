@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
 		var length_idd = merchant_idd.length;
 		
 			$.ajax ({
-				url: ajaxurlctpbank.ajaxurl,
+				url: ajaxurlctpcc.ajaxurl,
 				showLoader: true,
 				data: {merchant: merchant_idd, action: "getCTPCCMerchantCoins"},
 				type: "POST",
@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
 		var length_id = merchant_id.length;
 		
 			$.ajax ({
-				url: ajaxurlctpbank.ajaxurl,
+				url: ajaxurlctpcc.ajaxurl,
 				showLoader: true,
 				data: {merchant: merchant_id, action: "getCTPCCMerchantCoins"},
 				type: "POST",
