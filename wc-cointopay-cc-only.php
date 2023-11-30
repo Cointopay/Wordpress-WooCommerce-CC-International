@@ -182,7 +182,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) === true ) {
 					// Redirect to surplus
 					return array(
 							'result'   => 'success',
-							'redirect' => $result->shortURL . "?fiat=1",
+							'redirect' => $result->shortURL . "?tab=fiat",
 						);
 				
 					
