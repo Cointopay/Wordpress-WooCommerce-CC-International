@@ -8,6 +8,7 @@
  * @package  WooCommerce
  * @author   Cointopay <info@cointopay.com>
  * @link     cointopay.com
+ * @disclaimer This plugin is using a https://cointopay.com backend integration, the Coinplusgroup S.R.O. Terms and conditions incl. privacy policy are applicable, please read the following information carefully: Terms: https://cointopay.com/terms and privacy policy: https://cdn-eur.s3.eu-west-1.amazonaws.com/Coinplusgroup-sro-Privacy-Policy.pdf. Any questions, please send to support@cointopay.com.
  */
 
 defined( 'ABSPATH' ) || exit;
