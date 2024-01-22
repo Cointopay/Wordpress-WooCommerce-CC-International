@@ -213,7 +213,7 @@ if (is_plugin_active('woocommerce/woocommerce.php') === true) {
 						return array(
 							'result'   => 'success',
 							//'redirect' => esc_url($result->shortURL . "?tab=fiat"),
-							'redirect' => esc_url($result->PaymentDetailCConly),
+							'redirect' => $result->PaymentDetailCConly,
 						);
 					} else {
 						$error_msg = str_replace('"', "", $response['body']);
