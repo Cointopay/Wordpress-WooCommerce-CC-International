@@ -212,7 +212,8 @@ if (is_plugin_active('woocommerce/woocommerce.php') === true) {
 						// Redirect to surplus
 						return array(
 							'result'   => 'success',
-							'redirect' => esc_url($result->shortURL . "?tab=fiat"),
+							//'redirect' => esc_url($result->shortURL . "?tab=fiat"),
+							'redirect' => esc_url($result->PaymentDetailCConly),
 						);
 					} else {
 						$error_msg = str_replace('"', "", $response['body']);
