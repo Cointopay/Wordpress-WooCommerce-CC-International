@@ -209,11 +209,11 @@ if (is_plugin_active('woocommerce/woocommerce.php') === true) {
 					$response = wp_safe_remote_post($url, $params);
 					if ((false === is_wp_error($response)) && (200 === $response['response']['code']) && ('OK' === $response['response']['message'])) {
 						$result = json_decode($response['body']);
-						// Redirect to surplus
+						// Redirect to relevant paymenty page
 						return array(
 							'result'   => 'success',
-							//'redirect' => esc_url($result->shortURL . "?tab=fiat"),
-							'redirect' => $result->PaymentDetailCConly,
+							'redirect' => esc_url($result->shortURL . "?tab=fiat"),
+							//'redirect' => $result->PaymentDetailCConly,
 						);
 					} else {
 						$error_msg = str_replace('"', "", $response['body']);
