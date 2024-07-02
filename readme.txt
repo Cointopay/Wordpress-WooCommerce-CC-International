@@ -1,8 +1,12 @@
-=== Accept Bitcoin, Ethereum, Litecoin, Monero and many more crypto with Cointopay.com ===
+=== Cointopay.com CC Only ===
 Contributors: Cointopay, therightsw, goshila
 Requires at least: 3.8.1
 Tested up to: 6.3.1
 Stable tag: 1.3.1
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Extends WooCommerce with card payments gateway.
 
 == Description ==
 Card payment plugin for Wordpress WooCommerce, you can receive card payments into any currency and we can payout to your bank or you can keep it in crypto currency. Your choice.
