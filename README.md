@@ -1,5 +1,7 @@
 # Wordpress-WooCommerce-CC-International
 
+# PLEASE IF USE BLOCKBASED USE THIS 8x here: https://github.com/Cointopay/WordPress-WooCommerce8x-BlockBasedCheckout-CC-International #
+
 Card payment plugin for Wordpress WooCommerce, you can receive card payments into any currency and we can payout to your bank or you can keep it in crypto currency. Your choice.
 
 There are three prerequisites to get started:
