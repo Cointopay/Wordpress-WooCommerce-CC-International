@@ -200,11 +200,33 @@ if (is_plugin_active('woocommerce/woocommerce.php') === true) {
 					if ((false === is_wp_error($response)) && (200 === $response['response']['code']) && ('OK' === $response['response']['message'])) {
 						$result = json_decode($response['body']);
 						// Redirect to relevant paymenty page
-						return array(
-							'result'   => 'success',
-							'redirect' => esc_url($result->shortURL . "?tab=fiat"),
-							//'redirect' => $result->PaymentDetailCConly,
-						);
+						$htmlDom = new DOMDocument();
+						$htmlDom->loadHTML($result->PaymentDetailCConly);
+						$links = $htmlDom->getElementsByTagName('a');
+						$matches = [];
+
+						foreach ($links as $link) {
+							$linkHref = $link->getAttribute('href');
+							if (strlen(trim($linkHref)) == 0) {
+								continue;
+							}
+							if ($linkHref[0] == '#') {
+								continue;
+							}
+							$matches[] = $linkHref;
+						}
+						if (!empty($matches)) {
+							if ($matches[0] != '') {
+								return array(
+								'result'   => 'success',
+								'redirect' => esc_url($matches[0]),
+							);
+							} else {
+								wc_add_notice('Payment link is empty', 'error');
+							}
+						} else {
+							wc_add_notice('pattern not match', 'error');
+						}
 					} else {
 						$error_msg = str_replace('"', "", $response['body']);
 						wc_add_notice($error_msg, 'error');
