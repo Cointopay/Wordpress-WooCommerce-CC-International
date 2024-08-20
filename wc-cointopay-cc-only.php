@@ -219,7 +219,7 @@ if (is_plugin_active('woocommerce/woocommerce.php') === true) {
 							if ($matches[0] != '') {
 								return array(
 								'result'   => 'success',
-								'redirect' => esc_url($matches[0]),
+								'redirect' => esc_url_raw($matches[0]),
 							);
 							} else {
 								wc_add_notice('Payment link is empty', 'error');
