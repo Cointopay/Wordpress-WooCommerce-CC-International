@@ -1,8 +1,8 @@
 === Cointopay.com CC Only ===
 Contributors: Cointopay, therightsw, goshila
 Requires at least: 3.8.1
-Tested up to: 6.5.5
-Stable tag: 1.3.1
+Tested up to: 6.6.1
+Stable tag: 1.3.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -26,8 +26,8 @@ Card payment plugin for Wordpress WooCommerce, you can receive card payments int
 6. Save changes
 
 *Tested on:*
-WordPress 3.8.1 --> 6.5.5
-WooCommerce 2.1.9 --> 9.0.2
+WordPress 3.8.1 --> 6.6.1
+WooCommerce 2.1.9 --> 9.1.4
 
 *Notes:*
 - Please note that the default checkout currency is Bitcoin, the customer can pay via other currencies as well by clicking the currency icon. Enable other currencies on Cointopay.com by going to Account > Wallet preferences and selecting multiple currencies e.g. Bitcoin, Litecoin, Ethereum, Ripple etc.
