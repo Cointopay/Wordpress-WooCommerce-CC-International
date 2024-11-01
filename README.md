@@ -13,7 +13,7 @@ There are three prerequisites to get started:
 Please follow the Wordpress WooCommerce Cointopay CC Plugin install instructions mentioned below:
 
 # Version:
-- Version 1.3.1
+- Version 1.3.3
 
 # Configuration Instructions
 
@@ -25,8 +25,8 @@ Please follow the Wordpress WooCommerce Cointopay CC Plugin install instructions
     6. Save changes.
 
 Tested on:
-- WordPress 3.8.1 --> 6.3.1
-- WooCommerce 2.1.9 --> 8.1.1
+- WordPress 3.8.1 --> 6.6.2
+- WooCommerce 2.1.9 --> 9.3.3
 
 ### Notes:
 - Please note that the default checkout currency is Bitcoin, the customer can pay via other currencies as well by clicking the currency icon. Enable other currencies on Cointopay.com by going to Account > Wallet preferences and selecting multiple currencies e.g. Bitcoin, Litecoin, Ethereum, Ripple etc.
