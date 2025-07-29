@@ -172,8 +172,9 @@ class WC_CointopayCC_Gateway extends WC_Payment_Gateway {
 			endforeach;
 		endif;
 		$url      = 'https://app.cointopay.com/MerchantAPI?Checkout=true';
+		$customer_email = $order->get_billing_email();
 		$params   = array(
-			'body' => 'SecurityCode=' . $this->secret . '&MerchantID=' . $this->merchant_id . '&Amount=' . number_format($order->get_total(), 8, '.', '') . '&AltCoinID=' . $this->alt_coin_id . '&output=json&inputCurrency=' . get_woocommerce_currency() . '&CustomerReferenceNr=' . $order_id . '-' . $order->get_order_number() . '&returnurl=' . rawurlencode(esc_url($this->get_return_url($order))) . '&transactionconfirmurl=' . site_url('/?wc-api=WC_CointopayCC_Gateway') . '&transactionfailurl=' . rawurlencode(esc_url($order->get_cancel_order_url())),
+			'body' => 'email='.$customer_email.'&SecurityCode=' . $this->secret . '&MerchantID=' . $this->merchant_id . '&Amount=' . number_format($order->get_total(), 8, '.', '') . '&AltCoinID=' . $this->alt_coin_id . '&output=json&inputCurrency=' . get_woocommerce_currency() . '&CustomerReferenceNr=' . $order_id . '-' . $order->get_order_number() . '&returnurl=' . rawurlencode(esc_url($this->get_return_url($order))) . '&transactionconfirmurl=' . site_url('/?wc-api=WC_CointopayCC_Gateway') . '&transactionfailurl=' . rawurlencode(esc_url($order->get_cancel_order_url())),
 		);
 		$response = wp_safe_remote_post($url, $params);
 		if ((false === is_wp_error($response)) && (200 === $response['response']['code']) && ('OK' === $response['response']['message'])) {
