@@ -311,7 +311,7 @@ class WC_CointopayCC_Gateway extends WC_Payment_Gateway {
 					    $order->payment_complete(); // This automatically sets status to processing
 					    $new_status = $order->get_status();
 						// Add order note
-						$order->add_order_note( __( 'IPN: Update event for Cointopay from status '.$status.' to '.$new_status.':', 'woocommerce' ) . ' ' . $orderid );
+						$order->add_order_note( __( 'IPN: Update event for Cointopay from status '.$status.' to '.$new_status.':', 'woocommerce' ) . ' ' . $order_id );
 					}
 
 					get_header();
