@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Cointopay.com CC Only
  * Description: Extends WooCommerce with card payments gateway.
- * Version: 1.3.5
+ * Version: 1.3.6
  * Author: Cointopay
  * Text Domain: wc-cointopay-cc-only
  * @package  WooCommerce
