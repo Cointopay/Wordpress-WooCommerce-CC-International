@@ -7,7 +7,7 @@ jQuery(document).ready(function ($) {
 			$.ajax ({
 				url: ajaxurlctpcc.ajaxurl,
 				showLoader: true,
-				data: {merchant: merchant_idd, action: "getCTPCCMerchantCoins"},
+				data: {merchant: merchant_idd, action: "getCTPCCMerchantCoins", ctpconfinonce: ajaxurlctpcc.ctpconfinonce},
 				type: "POST",
 				success: function(result) {
 					$('select[id="woocommerce_cointopay_cc_cointopay_cc_alt_coin"]').html('');
@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
 			$.ajax ({
 				url: ajaxurlctpcc.ajaxurl,
 				showLoader: true,
-				data: {merchant: merchant_id, action: "getCTPCCMerchantCoins"},
+				data: {merchant: merchant_id, action: "getCTPCCMerchantCoins", ctpconfinonce: ajaxurlctpcc.ctpconfinonce},
 				type: "POST",
 				success: function(result) {
 					$('select[id="woocommerce_cointopay_cc_cointopay_cc_alt_coin"]').html('');

@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Cointopay.com CC Only
  * Description: Extends WooCommerce with card payments gateway.
- * Version: 1.3.8
+ * Version: 1.3.9
  * Author: Cointopay
- * Text Domain: wc-cointopay-cc-only
+ * Text Domain: cointopay-com-cc-only
  * @package  WooCommerce
  * @author   Cointopay <info@cointopay.com>
  * @link     cointopay.com
@@ -12,7 +12,7 @@
  * License: GPL v3.0
  */
 
-defined('ABSPATH') || exit;
+if (!defined('ABSPATH')) exit;
 
 require_once plugin_dir_path( __FILE__ ) . 'hooks/get_merchant_coins.php';
 
@@ -25,6 +25,7 @@ function wc_cointopay_cc_gateway_class( $gateways ) {
 add_action( 'plugins_loaded', 'woocommerce_cointopay_cc_init' );
 
 function woocommerce_cointopay_cc_init() {
+	if ( ! class_exists('WC_Payment_Gateway') ) return;
 	require_once plugin_dir_path( __FILE__ ) . 'classes/wc_cointopay_cc_gateway.php';
 }
 

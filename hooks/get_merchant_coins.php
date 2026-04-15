@@ -1,10 +1,17 @@
 <?php
+if (!defined('ABSPATH')) exit;
+
 add_action( 'wp_ajax_nopriv_getCTPCCMerchantCoins', 'cointopay_cc_getCTPCCMerchantCoins' );
 add_action( 'wp_ajax_getCTPCCMerchantCoins', 'cointopay_cc_getCTPCCMerchantCoins' );
 function cointopay_cc_getCTPCCMerchantCoins()
 {
-	$merchantId = 0;
-	$merchantId = intval($_REQUEST['merchant']);
+	$coin_nonce = !empty(sanitize_text_field(wp_unslash($_POST['ctpconfinonce']))) ? sanitize_text_field(wp_unslash($_POST['ctpconfinonce'])) : null;
+	if($coin_nonce) {
+		if ( ! wp_verify_nonce( $coin_nonce, 'cointopay_cc_ajax_nonce' ) ) {
+			echo 'Invalid nonce';
+		}
+	}
+	$merchantId = isset($_REQUEST['merchant']) ? intval($_REQUEST['merchant']) : 0;
 	if (isset($merchantId) && $merchantId !== 0) {
 		$option = '';
 		$arr = cointopay_cc_getCTPCCCoins($merchantId);
